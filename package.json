@@ -1,0 +1,24 @@
+{
+  "name": "write-in-peace",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "create-model": "cd src && npx sequelize-cli model:generate --name ",
+    "go-migrate": "cd src && npx sequelize-cli db:migrate",
+    "undo-all-migrates": "cd src && npx sequelize-cli db:migrate:undo:all"
+  },
+  "dependencies": {
+    "@hapi/boom": "^10.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "joi": "^17.6.0",
+    "nodemon": "^2.0.16",
+    "pg": "^8.7.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.21.0",
+    "sequelize-cli": "^6.4.1"
+  }
+}
