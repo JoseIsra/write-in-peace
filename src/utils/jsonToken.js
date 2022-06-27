@@ -1,0 +1,28 @@
+const jwt = require("jsonwebtoken");
+
+/**
+ * @params {payload} Argument to sign and create the new token
+ * @return {token,expiresIn} Object with attributes: token and expiresIn
+ */
+const createToken = (payload) => {
+  try {
+    const expiresIn = 60 * 15;
+    const token = jwt.sign({ key: payload }, process.env.JWT_SECRET, {
+      expiresIn,
+    });
+    return { token, expiresIn };
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const jsonWebTokenErrors = {
+  "invalid token": "Token inválido",
+  "jwt malformed": "Token incompleto,faltan componentes",
+  "jwt signature is required": "Firma de token requerida",
+  "invalid signature": "Firma de token inválida",
+  "jwt expired": "Token expirado",
+  "No Bearer": "No existe token",
+};
+
+module.exports = { createToken, jsonWebTokenErrors };

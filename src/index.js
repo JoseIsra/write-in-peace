@@ -1,9 +1,15 @@
+require("dotenv").config();
 const express = require("express");
-
+const cors = require("cors");
+const initRouter = require("./routes");
 const app = express();
+const PORT = process.env.PORT || 8081;
 
-const PORT = 8081;
+// server config 😀
 app.use(express.json());
+app.use(cors());
+app.set("strict routing", true);
+initRouter(app);
 
 app.use("/", (req, res) => {
   res.json({
@@ -12,5 +18,5 @@ app.use("/", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log("server on http://localhost:8081/");
+  console.log(`server on http://localhost:${PORT}/`);
 });
