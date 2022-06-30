@@ -16,6 +16,22 @@ const createToken = (payload) => {
   }
 };
 
+const createTokenRefresher = (payload, res) => {
+  try {
+    const expiresIn = 60 * 60 * 24 * 30;
+    const refreshToken = jwt.sign({ key: payload }, process.env.JWT_REFRESH, {
+      expiresIn,
+    });
+    res.cookie("refresherToken", refreshToken, {
+      httpOnly: true,
+      secure: !(process.env.MODE === "developer"),
+      expires: new Date(Date.now() + expiresIn * 1000),
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const jsonWebTokenErrors = {
   "invalid token": "Token inválido",
   "jwt malformed": "Token incompleto,faltan componentes",
@@ -25,4 +41,4 @@ const jsonWebTokenErrors = {
   "No Bearer": "No existe token",
 };
 
-module.exports = { createToken, jsonWebTokenErrors };
+module.exports = { createToken, jsonWebTokenErrors, createTokenRefresher };

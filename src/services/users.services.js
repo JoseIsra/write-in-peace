@@ -1,6 +1,6 @@
 const { User } = require("../models");
 const bcrypt = require("bcrypt");
-const { createToken } = require("../utils/jsonToken");
+const { createToken, createTokenRefresher } = require("../utils/jsonToken");
 
 module.exports = {
   getUsers: async (req, res) => {
@@ -66,11 +66,13 @@ module.exports = {
       }
       // handle JWT 🤔
       const { token, expiresIn } = createToken(user.id);
+      createTokenRefresher(user.id, res);
 
       return res.status(200).json({
         message: "Usuario existe y con contraseña",
         user,
         token,
+        expiresIn,
       });
     } catch (error) {
       if (error.code === 11001) {
@@ -80,5 +82,24 @@ module.exports = {
         });
       }
     }
+  },
+  refresh: (req, res) => {
+    try {
+      console.log("from request header payload", req.payload);
+      const { token, expiresIn } = createToken(req.payload.key);
+      return res.json({
+        token,
+        expiresIn,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ messge: "Server error 🛑" });
+    }
+  },
+  logout: (req, res) => {
+    res.clearCookie("refresherToken");
+    res.status(200).json({
+      message: "Sesión terminada",
+    });
   },
 };

@@ -5,10 +5,15 @@ const {
   validateLoginContent,
 } = require("../../middlewares/validateRequest");
 
-const { authenticateRoute } = require("../../middlewares/authenticate");
+const {
+  authenticateRoute,
+  authenticateRefreshToken,
+} = require("../../middlewares/authenticate");
 
 router.get("/users", authenticateRoute, userServices.getUsers);
 router.post("/signin", validateBodyRegisterContent, userServices.signInUser);
 router.post("/login", validateLoginContent, userServices.login);
+router.get("/refresh", authenticateRefreshToken, userServices.refresh);
+router.get("/logout", userServices.logout);
 
 module.exports = router;
