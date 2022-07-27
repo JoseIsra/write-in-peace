@@ -4,8 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "create-model": "cd src && npx sequelize-cli model:generate --name ",
     "go-migrate": "cd src && npx sequelize-cli db:migrate",
     "undo-all-migrates": "cd src && npx sequelize-cli db:migrate:undo:all"

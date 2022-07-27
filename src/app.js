@@ -4,7 +4,6 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const initRouter = require("./routes");
 const app = express();
-const PORT = process.env.PORT || 8085;
 
 const whitelist = ["http://localhost:8081"];
 // server config 😀
@@ -25,12 +24,10 @@ app.use(cookieParser());
 app.set("strict routing", true);
 initRouter(app);
 
-// app.use("/", (req, res) => {
-//   res.json({
-//     message: "WELCOME 😃",
-//   });
-// });
-
-app.listen(PORT, () => {
-  console.log(`server on http://localhost:${PORT}/`);
+app.get("/hi", (req, res) => {
+  res.json({
+    message: "WELCOME 😃",
+  });
 });
+
+module.exports = app;
