@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const writtingServices = require("../../../src/services/writtings.services");
+const writtingServices = require("../../services/writtings.services");
 
 router.get("/", writtingServices.getWrittings);
 
