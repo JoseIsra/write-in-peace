@@ -1,14 +1,14 @@
 const router = require("express").Router();
-const userServices = require("../../services/users.services");
+const userServices = require("../../../src/services/users.services");
 const {
   validateBodyRegisterContent,
   validateLoginContent,
-} = require("../../middlewares/validateRequest");
+} = require("../../../src/middlewares/validateRequest");
 
 const {
   authenticateRoute,
   authenticateRefreshToken,
-} = require("../../middlewares/authenticate");
+} = require("../../../src/middlewares/authenticate");
 
 router.get("/users", authenticateRoute, userServices.getUsers);
 router.post("/signin", validateBodyRegisterContent, userServices.signInUser);
