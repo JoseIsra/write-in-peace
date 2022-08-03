@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const app = express();
-
+const initRouter = require("./routes");
 const whitelist = ["http://localhost:8081"];
 // server config 😀
 app.use(
@@ -21,6 +21,6 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 app.set("strict routing", true);
-//initRouter(app);
+initRouter(app);
 
 module.exports = app;
