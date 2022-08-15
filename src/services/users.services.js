@@ -23,6 +23,27 @@ module.exports = {
       });
     }
   },
+  getUser: async (req, res) => {
+    try {
+      const user = await User.findOne({
+        where: {
+          id: req.payload.key,
+        },
+      });
+      delete user.dataValues.password_hash;
+      delete user.dataValues.createdAt;
+      delete user.dataValues.updatedAt;
+
+      res.status(200).json({
+        message: "User",
+        user,
+      });
+    } catch (error) {
+      res.status(400).json({
+        message: error,
+      });
+    }
+  },
   signInUser: async (req, res) => {
     const { name, lastName, email, password } = req.body;
     try {
@@ -67,6 +88,9 @@ module.exports = {
       // handle JWT 🤔
       const { token, expiresIn } = createToken(user.id);
       createTokenRefresher(user.id, res);
+      delete user.dataValues.password_hash;
+      delete user.dataValues.createdAt;
+      delete user.dataValues.updatedAt;
 
       return res.status(200).json({
         message: "Usuario existe y con contraseña",
@@ -88,6 +112,7 @@ module.exports = {
       console.log("from request header payload", req.payload);
       const { token, expiresIn } = createToken(req.payload.key);
       return res.json({
+        message: "TOKEN-refresh sended",
         token,
         expiresIn,
       });

@@ -11,6 +11,7 @@ const {
 } = require("../../middlewares/authenticate");
 
 router.get("/users", authenticateRoute, userServices.getUsers);
+router.get("/userme", authenticateRoute, userServices.getUser);
 router.post("/signin", validateBodyRegisterContent, userServices.signInUser);
 router.post("/login", validateLoginContent, userServices.login);
 router.get("/refresh", authenticateRefreshToken, userServices.refresh);

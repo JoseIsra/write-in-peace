@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const initRouter = require("./routes");
 const whitelist = ["http://localhost:8081"];
+// https://writting-and-peace.herokuapp.com/api/v1/writting
 // server config 😀
 app.use(
   cors({
@@ -15,8 +16,8 @@ app.use(
       }
       return callback("Cors locked 🤖");
     },
+    credentials: true,
   })
-  // credentials: true,
 );
 app.use(express.json());
 app.use(cookieParser());
