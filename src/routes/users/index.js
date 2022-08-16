@@ -1,16 +1,17 @@
 const router = require("express").Router();
-const userServices = require("../../../src/services/users.services");
+const userServices = require("../../services/users.services");
 const {
   validateBodyRegisterContent,
   validateLoginContent,
-} = require("../../../src/middlewares/validateRequest");
+} = require("../../middlewares/validateRequest");
 
 const {
   authenticateRoute,
   authenticateRefreshToken,
-} = require("../../../src/middlewares/authenticate");
+} = require("../../middlewares/authenticate");
 
 router.get("/users", authenticateRoute, userServices.getUsers);
+router.get("/userme", authenticateRoute, userServices.getUser);
 router.post("/signin", validateBodyRegisterContent, userServices.signInUser);
 router.post("/login", validateLoginContent, userServices.login);
 router.get("/refresh", authenticateRefreshToken, userServices.refresh);

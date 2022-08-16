@@ -23,10 +23,32 @@ module.exports = {
       });
     }
   },
+  getUser: async (req, res) => {
+    try {
+      const user = await User.findOne({
+        where: {
+          id: req.payload.key,
+        },
+      });
+      delete user.dataValues.password_hash;
+      delete user.dataValues.createdAt;
+      delete user.dataValues.updatedAt;
+
+      res.status(200).json({
+        message: "User",
+        user,
+      });
+    } catch (error) {
+      res.status(400).json({
+        message: error,
+      });
+    }
+  },
   signInUser: async (req, res) => {
     const { name, lastName, email, password } = req.body;
     try {
-      const user = User.findOne({ where: { email } });
+      const user = await User.findOne({ where: { email } });
+      console.log("UISER FOUND", user);
       if (user) throw { code: 11000 };
 
       const response = await User.create({
@@ -38,13 +60,17 @@ module.exports = {
         options: "{}",
       });
       delete response.dataValues.password;
+      const { token, expiresIn } = createToken(response.id);
+      createTokenRefresher(response.id, res);
       res.status(200).json({
         message: "Creación exitosa",
-        data: response,
+        user: response,
+        token,
+        expiresIn,
       });
     } catch (error) {
       if (error.code === 11000) {
-        return res.status(400).json({
+        return res.json({
           message: "Ya existe un usuario con ese email",
           code: "11000",
         });
@@ -67,6 +93,9 @@ module.exports = {
       // handle JWT 🤔
       const { token, expiresIn } = createToken(user.id);
       createTokenRefresher(user.id, res);
+      delete user.dataValues.password_hash;
+      delete user.dataValues.createdAt;
+      delete user.dataValues.updatedAt;
 
       return res.status(200).json({
         message: "Usuario existe y con contraseña",
@@ -76,7 +105,7 @@ module.exports = {
       });
     } catch (error) {
       if (error.code === 11001) {
-        return res.status(403).json({
+        return res.json({
           message: "No existe un usuario con ese email",
           code: "11001",
         });
@@ -88,6 +117,7 @@ module.exports = {
       console.log("from request header payload", req.payload);
       const { token, expiresIn } = createToken(req.payload.key);
       return res.json({
+        message: "TOKEN-refresh sended",
         token,
         expiresIn,
       });

@@ -17,6 +17,7 @@ const createToken = (payload) => {
 };
 
 const createTokenRefresher = (payload, res) => {
+  console.log("FUNCIONA EL REFRESHER?", payload);
   try {
     const expiresIn = 60 * 60 * 24 * 30;
     const refreshToken = jwt.sign({ key: payload }, process.env.JWT_REFRESH, {
@@ -38,7 +39,7 @@ const jsonWebTokenErrors = {
   "jwt signature is required": "Firma de token requerida",
   "invalid signature": "Firma de token inválida",
   "jwt expired": "Token expirado",
-  "No Bearer": "No existe token",
+  "No Bearer": "NOTOKEN-No existe token",
 };
 
 module.exports = { createToken, jsonWebTokenErrors, createTokenRefresher };
