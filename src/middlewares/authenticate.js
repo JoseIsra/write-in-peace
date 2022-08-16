@@ -18,14 +18,13 @@ const authenticateRoute = (req, res, next) => {
 const authenticateRefreshToken = (req, res, next) => {
   try {
     const refresherToken = req.cookies.refresherToken;
-    if (!refresherToken) throw new Error("No hay token");
+    if (!refresherToken) throw new Error("No Bearer");
 
     const key = jwt.verify(refresherToken, process.env.JWT_REFRESH);
     req.payload = key;
     next();
   } catch (error) {
-    console.error(error);
-    res.status(401).json({
+    res.json({
       message: jsonWebTokenErrors[error.message],
     });
   }

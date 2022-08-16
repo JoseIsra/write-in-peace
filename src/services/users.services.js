@@ -47,7 +47,8 @@ module.exports = {
   signInUser: async (req, res) => {
     const { name, lastName, email, password } = req.body;
     try {
-      const user = User.findOne({ where: { email } });
+      const user = await User.findOne({ where: { email } });
+      console.log("UISER FOUND", user);
       if (user) throw { code: 11000 };
 
       const response = await User.create({
@@ -59,13 +60,17 @@ module.exports = {
         options: "{}",
       });
       delete response.dataValues.password;
+      const { token, expiresIn } = createToken(response.id);
+      createTokenRefresher(response.id, res);
       res.status(200).json({
         message: "Creación exitosa",
-        data: response,
+        user: response,
+        token,
+        expiresIn,
       });
     } catch (error) {
       if (error.code === 11000) {
-        return res.status(400).json({
+        return res.json({
           message: "Ya existe un usuario con ese email",
           code: "11000",
         });
@@ -100,7 +105,7 @@ module.exports = {
       });
     } catch (error) {
       if (error.code === 11001) {
-        return res.status(403).json({
+        return res.json({
           message: "No existe un usuario con ese email",
           code: "11001",
         });

@@ -4,11 +4,12 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
     "create-model": "cd src && npx sequelize-cli model:generate --name ",
     "go-migrate": "cd src && npx sequelize-cli db:migrate",
-    "undo-all-migrates": "cd src && npx sequelize-cli db:migrate:undo:all"
+    "undo-all-migrates": "cd src && npx sequelize-cli db:migrate:undo:all",
+    "skeleton": "cd src && npx sequelize-cli migration:generate --name "
   },
   "dependencies": {
     "@hapi/boom": "^10.0.0",
