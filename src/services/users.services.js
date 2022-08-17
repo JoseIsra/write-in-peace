@@ -48,7 +48,6 @@ module.exports = {
     const { name, lastName, email, password } = req.body;
     try {
       const user = await User.findOne({ where: { email } });
-      console.log("UISER FOUND", user);
       if (user) throw { code: 11000 };
 
       const response = await User.create({
