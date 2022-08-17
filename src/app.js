@@ -4,7 +4,10 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const app = express();
 const initRouter = require("./routes");
-const whitelist = ["http://localhost:8081"];
+const whitelist = [
+  "http://localhost:8081",
+  "https://write-in-peace.vercel.app",
+];
 const PORT = process.env.PORT || 8085;
 
 // https://writting-and-peace.herokuapp.com/api/v1/writting
