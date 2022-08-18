@@ -24,7 +24,7 @@ const createTokenRefresher = (payload, res) => {
       expiresIn,
     });
     res.cookie("refresherToken", refreshToken, {
-      httpOnly: true,
+      httpOnly: false,
       secure: !(process.env.MODE === "developer"),
       sameSite: "none",
       // secure: false,
