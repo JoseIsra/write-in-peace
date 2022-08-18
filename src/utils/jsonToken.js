@@ -27,6 +27,7 @@ const createTokenRefresher = (payload, res) => {
       httpOnly: false,
       secure: !(process.env.MODE === "developer"),
       sameSite: "none",
+      domain: "write-in-peace.vercel.app",
       // secure: false,
       expires: new Date(Date.now() + expiresIn * 1000),
     });
