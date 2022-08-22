@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
  */
 const createToken = (payload) => {
   try {
-    const expiresIn = 60 * 15;
+    const expiresIn = 60 * 60 * 60 * 15;
     const token = jwt.sign({ key: payload }, process.env.JWT_SECRET, {
       expiresIn,
     });
@@ -24,11 +24,8 @@ const createTokenRefresher = (payload, res) => {
       expiresIn,
     });
     res.cookie("refresherToken", refreshToken, {
-      httpOnly: false,
+      httpOnly: true,
       secure: !(process.env.MODE === "developer"),
-      sameSite: "none",
-      domain: "write-in-peace.vercel.app",
-      // secure: false,
       expires: new Date(Date.now() + expiresIn * 1000),
     });
   } catch (error) {
